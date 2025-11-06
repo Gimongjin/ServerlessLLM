@@ -7,7 +7,7 @@ services:
     image: serverlessllm/sllm:latest
     container_name: sllm_head
     environment:
-      - MODEL_FOLDER=${MODEL_FOLDER}
+      - MODEL_FOLDER=/home/hjkim/ServerlessLLM/models/
       - MODE=HEAD
     ports:
       - "6379:6379"    # Redis port
@@ -31,13 +31,14 @@ services:
               capabilities: ["gpu"]
               device_ids: ["0"] # Assigns GPU 0 to the worker
     environment:
+      - MODEL_FOLDER=/home/hjkim/ServerlessLLM/models/
       - WORKER_ID=0
       - STORAGE_PATH=/models
       - MODE=WORKER
     networks:
       - sllm_network
     volumes:
-      - ${MODEL_FOLDER}:/models
+      - /home/hjkim/ServerlessLLM/models/:/models
     command: ["--mem-pool-size", "4GB", "--registration-required", "true"] # Customize the memory pool size here
 
 networks:

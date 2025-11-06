@@ -18,11 +18,24 @@
 import asyncio
 from dataclasses import dataclass
 from typing import List, Optional
+from sllm.logger import init_logger
 
 import ray
 
 
 def get_worker_nodes():
+    logger = init_logger(__name__)
+
+    import ray
+    # Ensure we are connected to the Ray cluster
+    if not ray.is_initialized():
+        try:
+            ray.init(address="auto", ignore_reinit_error=True)
+            logger.info("[get_worker_nodes] Connected to existing Ray cluster.")
+        except Exception as e:
+            logger.error(f"[get_worker_nodes] Failed to connect to Ray cluster: {e}")
+            return {}
+
     ray_nodes = ray.nodes()
     worker_node_info = {}
     for node in ray_nodes:

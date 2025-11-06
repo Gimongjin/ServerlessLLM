@@ -353,7 +353,7 @@ class StoreManager:
         return await local_server.load_to_host(model_name)
 
     async def register(self, model_config):
-        model_name = model_config.get("model")
+        model_name = model_config.get("model") 
         backend = model_config.get("backend", None)
         if backend is None:
             logger.error(f"Backend not specified for {model_name}")
@@ -377,6 +377,10 @@ class StoreManager:
             for node_id, node_info in worker_node_info.items():
                 node_address = node_info["address"]
                 if node_id not in self.local_servers:
+                    logger.info(f"node_id is {node_id}") # hjkim
+                    print(node_id)
+                    logger.info(f"self.local_servers is {self.local_servers}")
+                    print(self.local_servers) # hjkim
                     if self.local_servers:
                         first_node = next(iter(self.local_servers.values()))
                         self.local_servers[node_id] = SllmLocalStore(

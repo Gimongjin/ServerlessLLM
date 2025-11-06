@@ -1,6 +1,6 @@
 {
     "model": "",
-    "backend": "vllm",
+    "backend": "transformers",
     "num_gpus": 1,
     "auto_scaling_config": {
         "metric": "concurrency",
